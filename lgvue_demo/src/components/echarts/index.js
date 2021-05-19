@@ -1,0 +1,5 @@
+export { default as BarEcharts } from './BarEcharts'
+export { default as LineEcharts } from './LineEcharts'
+export { default as PieEcharts } from './PieEcharts'
+export { default as GaugeEcharts } from './GaugeEcharts'
+export { default as MapEcharts } from './MapEcharts'
