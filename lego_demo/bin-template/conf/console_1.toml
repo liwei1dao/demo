@@ -1,0 +1,46 @@
+Id = "console_1"                      #服务的唯一id 不可重复
+Tag = "demo"                          #服务集群标签 相同标签 sys.registry 和 sys.rpc 配置一致 即可互相发现和通信
+Type = "console"                      #服务类型 相同服务类型相同 如 多个login 服务 相同服务多开 服务类型一致
+Category = "SystemService"            #服务类别 例如 网关服务器 或者 游戏服务器 以及普通业务服务器
+Version = 1.0                         #服务版本 多服务器相同的服务类型 高版本比低版本拥有更高的访问优先级 使用场景 热更新机制
+
+[Settings]
+
+# 日志系统  基础系统 每个服务默认启动
+[Sys.log]
+FileName = "./log/console.log"      #日志保存路径
+Loglayer = 2                        #日志打印层级
+Loglevel = 0                        #日志输出级别
+Debugmode = true                    #是否开启debug模式
+# 注册表系统 集群服务基础系统 集群服务默认启动
+[Sys.registry]
+ConsulAddr = "127.0.0.1:8500"       #Consul服务地址
+# rpc通信系统 集群服务基础系统 集群服务默认启动
+[Sys.rpc]
+NatsAddr = "nats://127.0.0.1:4222"  #Nats服务地址
+
+[Modules.SM_ConsoleModule]
+HttpAddr = ":9567"                          #web端口
+RedisUrl = "127.0.0.1:6379"
+RedisDB = 1
+MongodbUrl = "mongodb://127.0.0.1:27017"
+MongodbDatabase = "avatartv"
+MailServerhost = "smtp.qq.com"
+MailFromemail = "liwei1dao@foxmail.com"
+MailFompasswd = "tucfnwfgmnqleaaf"
+MailServerport = 587
+SignKey = "@234%67g12q4*67m12#4l67!"        #签名密钥 长度 24 对称加密需要固定长度密钥
+UserInitialPassword = "88888888"            #用户初始化密码
+ProjectName= "Demo"
+ProjectDes="lego + lgvue +lgu3d 开发框架演示项目"
+ProjectVersion = 1.0
+ProjectTime = "2021-05-23 09:42"
+[Modules.SM_ConsoleModule.ProjectMember.001] #项目成员
+MemberName="李伟"
+ProjectPosition="设计"
+[Modules.SM_ConsoleModule.ProjectMember.002] #项目成员
+MemberName="李伟"
+ProjectPosition="开发"
+[Modules.SM_ConsoleModule.ProjectMember.003] #项目成员
+MemberName="李伟"
+ProjectPosition="美术"

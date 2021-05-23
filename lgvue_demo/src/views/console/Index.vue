@@ -18,27 +18,29 @@
             {{$t('ProjectMember')}}
           </v-card-title>
           <v-card-text>
-            <v-simple-table>
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">
-                      {{$t('Position')}}
-                    </th>
-                    <th class="text-left">
-                      {{$t('Name')}}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(member,key) in projectinfo.ProjectMember"
-                      :key="key">
-                    <td>{{ member.ProjectPosition }}</td>
-                    <td>{{ member.MemberName }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
+            <v-card width="656px">
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        {{$t('Position')}}
+                      </th>
+                      <th class="text-left">
+                        {{$t('Name')}}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(member,key) in projectinfo.ProjectMember"
+                        :key="key">
+                      <td>{{ member.ProjectPosition }}</td>
+                      <td>{{ member.MemberName }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-card>
           </v-card-text>
         </v-card>
         <v-card class="pt-6"
