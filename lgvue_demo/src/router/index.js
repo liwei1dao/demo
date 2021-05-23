@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LayoutV from '@/layout/LayoutV.vue'
+import LayoutA from '@/layout/LayoutA.vue'
 import store from '@/store'
 import Message from '@/components/message/'
 
@@ -28,7 +29,7 @@ const staticRoutes = [
   {
     path: '/',
     name: 'Index',
-    component: LayoutV,
+    component: LayoutA,
     redirect: '/index',
     meta: { title: 'Index', icon: 'mdi-home-floor-b', role: Role.Guester },
     children: [
@@ -91,7 +92,7 @@ const Dynamicroutes = [
 ]
 
 // 定义登录页面名称（为了方便理解才定义的）
-const BasePages = ['Login', 'Register']
+const BasePages = ['Login', 'Register', 'Index']
 const router = createRouter()
 
 function createRouter () {
