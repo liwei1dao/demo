@@ -35,7 +35,7 @@ func (this *DB) DB_RemoveAuthorByArticle(AuthorId uint32, Article uint32) (resul
 	result = &pb.DB_AuthorData{}
 	err = this.mgo.FindOneAndUpdate(Sql_AuthorDataIdTable,
 		bson.M{"_id": AuthorId},
-		bson.M{"$addToSet": bson.M{
+		bson.M{"$pull": bson.M{
 			"articleids": Article,
 		}},
 		new(options.FindOneAndUpdateOptions).SetReturnDocument(options.After)).Decode(result)
