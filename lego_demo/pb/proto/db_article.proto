@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package = ".;pb";
+
+//作者
+message DB_AuthorData {
+  uint32 AuthoIrd = 1;                        //tags:{bson:"_id"}作者id
+  string PhonOrEmail = 2;
+  string Password = 3;
+  string NickName = 4;
+  string HeadUrl = 5;
+  repeated uint32 ArticleIds = 6;             //文章列表
+}
+
+message DB_ArticleData {
+    uint32 Id = 1;                              //tags:{bson:"_id"}文章id
+    string Title = 2;                           //文章标题
+    string Content = 3;                         //文章内容
+    int64 CreationTime = 4;                     //传作时间
+    uint32 AuthorId = 5;                        //作者id
+    string AuthorName = 6;                      //作者id
+    string AuthorAvatar = 7;                    //作者头像
+    uint32 GreatNum = 8;                        //点赞数
+}

@@ -1,6 +1,10 @@
 <template>
-  <v-card width="650px">
-    <v-toolbar dense>
+  <v-card class="ma-2 align-self-start"
+          width="650px"
+          tile>
+    <v-toolbar color="primary"
+               dark
+               dense>
       <v-toolbar-title>{{service.Info.ServiceId}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon

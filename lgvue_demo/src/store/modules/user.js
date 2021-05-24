@@ -1,4 +1,4 @@
-import { loginbycaptcha, loginbypassword, getuserinfo, loginout } from '@/api/user'
+import { loginbycaptcha, loginbypassword, getuserinfo, loginout } from '@/api/console'
 import { paramsign } from '@/utils/md5'
 import { setToken, getToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'

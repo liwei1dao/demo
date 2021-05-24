@@ -37,6 +37,11 @@ const staticRoutes = [
         path: 'index',
         component: () => import('@/views/Index.vue'),
         meta: { title: 'Index', icon: 'mdi-home-floor-b', role: Role.Guester },
+      },
+      {
+        path: 'writing',
+        component: () => import('@/views/WritingPage.vue'),
+        meta: { title: 'WritingPage', icon: 'mdi-home-floor-b', role: Role.Guester },
       }
     ]
   },
@@ -86,6 +91,18 @@ const Dynamicroutes = [
         path: 'textccroll',
         component: () => import('@/views/components/TextCcroll.vue'),
         meta: { title: 'TextCcroll', icon: 'mdi-sign-text', role: Role.Guester },
+      },
+    ]
+  },
+  {//组件演示
+    path: '/operation',
+    component: LayoutV,
+    meta: { title: 'Operation', icon: 'mdi-video-input-component', role: Role.Guester },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/operation/index.vue'),
+        meta: { title: 'Information', icon: 'mdi-message-processing-outline', role: Role.Guester },
       },
     ]
   }

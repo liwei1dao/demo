@@ -9,12 +9,14 @@
           <v-row justify="center">
             <v-col cols="2">
               <v-btn class="text-h4 red--text font-weight-black"
+                     @click="goindex"
                      height="100%"
                      text>简书</v-btn>
             </v-col>
             <v-col>
               <v-btn class="text-h5 red--text"
                      height="100%"
+                     @click="goindex"
                      text>
                 <v-icon large
                         color="red">
@@ -60,6 +62,7 @@
               <v-btn class="text-h5  ml-6 white--text"
                      color="error"
                      rounded
+                     to='/writing'
                      height="100%"
                      dark>
                 <v-icon>mdi-lead-pencil</v-icon>
@@ -111,6 +114,13 @@ export default {
       'userinfo',
     ]),
   },
+  methods: {
+    goindex () {
+      this.$router.push({
+        path: `/index`,
+      })
+    }
+  }
 }
 </script>
 

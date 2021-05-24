@@ -7,6 +7,7 @@ import i18n from './plugins/i18n'
 import './plugins/message'
 import './plugins/vuelidate'
 import './plugins/echarts'
+import './plugins/mavonEditor'
 
 Vue.config.productionTip = false
 

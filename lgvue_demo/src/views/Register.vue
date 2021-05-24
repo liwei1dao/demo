@@ -67,8 +67,7 @@
 
 <script>
 import { required, sameAs, minLength, email, numeric, or } from 'vuelidate/lib/validators'
-import { sendemailcaptcha } from '@/api/api'
-import { registerbycaptcha } from '@/api/user'
+import { sendemailcaptcha, registerbycaptcha } from '@/api/console.js'
 import LayoutS from '@/layout/LayoutS.vue'
 export default {
   name: "Register",

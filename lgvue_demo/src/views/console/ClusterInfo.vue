@@ -8,7 +8,7 @@
           <p class="text-h6"> {{$t('HostInfo')}}</p>
         </v-card>
       </v-card-title>
-      <v-card-text class="d-flex justify-center ">
+      <v-card-text class="d-flex justify-center">
         <template v-if="clusterservice"
                   v-for="item in clusterservice">
           <service-item :service="item"></service-item>

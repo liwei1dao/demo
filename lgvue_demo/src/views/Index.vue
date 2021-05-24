@@ -77,6 +77,13 @@ export default {
 
     }
   },
+  methods: {
+    goindex () {
+      this.$router.push({
+        path: `/videodetails/${this.video.vod_id}`,
+      })
+    }
+  }
 }
 </script>
 
