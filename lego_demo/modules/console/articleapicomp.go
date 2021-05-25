@@ -25,6 +25,7 @@ func (this *ArticleApiComp) Init(service core.IService, module core.IModule, com
 	api.POST("/deletearticle", this.module.CheckToken, this.DeleteArticleReq)
 	api.POST("/getarticle", this.module.CheckToken, this.GetArticleReq)
 	api.POST("/getauthoIrdarticles", this.module.CheckToken, this.GetAuthoIrdArticlesReq)
+	api.POST("/getlastarticles", this.module.CheckToken, this.GetLastArticlesReq)
 	return
 }
 
@@ -44,6 +45,8 @@ func (this *ArticleApiComp) CreateArticleReq(c *http.Context) {
 			Id:           req.ArticleId,
 			Title:        req.Title,
 			Content:      req.Content,
+			ShortContent: req.ShortContent,
+			Images:       req.Images,
 			CreationTime: time.Now().Unix(),
 			AuthorId:     uId,
 			AuthorName:   user.Db_UserData.NickName,
@@ -71,7 +74,7 @@ func (this *ArticleApiComp) DeleteArticleReq(c *http.Context) {
 	)
 	if article, err = db.QueryArticle(req.ArticleId); err == nil && article.AuthorId == uId {
 		if err = db.DeleteArticle(uId, req.ArticleId); err == nil {
-			this.module.HttpStatusOK(c, core.ErrorCode_Success, nil)
+			this.module.HttpStatusOK(c, core.ErrorCode_Success, article)
 		} else {
 			this.module.HttpStatusOK(c, core.ErrorCode_SqlExecutionError, nil)
 		}
@@ -116,6 +119,22 @@ func (this *ArticleApiComp) GetArticleReq(c *http.Context) {
 		this.module.HttpStatusOK(c, core.ErrorCode_Success, article)
 	} else {
 		log.Errorf("GetArticleReq err:%v", err)
+		this.module.HttpStatusOK(c, core.ErrorCode_SqlExecutionError, nil)
+	}
+}
+
+func (this *ArticleApiComp) GetLastArticlesReq(c *http.Context) {
+	req := &pb.GetLastArticlesReq{}
+	c.ShouldBindJSON(req)
+	defer log.Debugf("GetLastArticlesReq:%+v", req)
+	var (
+		articles []*pb.DB_ArticleData
+		err      error
+	)
+	if articles, err = db.QueryArticlesByLast(req.Start, req.Num); err == nil {
+		this.module.HttpStatusOK(c, core.ErrorCode_Success, articles)
+	} else {
+		log.Errorf("GetLastArticlesReq err:%v", err)
 		this.module.HttpStatusOK(c, core.ErrorCode_SqlExecutionError, nil)
 	}
 }

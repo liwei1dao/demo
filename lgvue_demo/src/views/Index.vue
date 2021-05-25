@@ -2,8 +2,9 @@
   <v-container class="d-flex justify-center mt-6">
     <v-row justify="center">
       <v-col cols="6">
-        <article-item v-for="n in 6"
-                      :key="n"></article-item>
+        <article-item v-for="item in articles"
+                      :key="item.Id"
+                      :article="item"></article-item>
       </v-col>
       <v-col cols="2">
         <v-btn class="mb-4 text-h6 float-left cyan cyan--text text--darken-4"
@@ -60,6 +61,7 @@
 </template>
 
 <script>
+import { getlastarticles } from '@/api/article.js'
 import ArticleItem from "./ArticleItem.vue"
 import { mapGetters } from 'vuex'
 export default {
@@ -74,16 +76,14 @@ export default {
   },
   data: () => {
     return {
-
+      articles: [],
     }
   },
-  methods: {
-    goindex () {
-      this.$router.push({
-        path: `/videodetails/${this.video.vod_id}`,
-      })
-    }
-  }
+  created () {
+    getlastarticles(null).then(response => {
+      this.articles = response.data
+    })
+  },
 }
 </script>
 

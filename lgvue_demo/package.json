@@ -17,6 +17,7 @@
     "moment": "^2.29.1",
     "vue": "^2.6.11",
     "vue-echarts": "*",
+    "vue-markdown": "^2.2.4",
     "vue-resize": "^1.0.1",
     "vue-router": "^3.2.0",
     "vuelidate": "^0.7.6",

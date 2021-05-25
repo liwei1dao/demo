@@ -14,10 +14,13 @@ message DB_AuthorData {
 message DB_ArticleData {
     uint32 Id = 1;                              //tags:{bson:"_id"}文章id
     string Title = 2;                           //文章标题
-    string Content = 3;                         //文章内容
-    int64 CreationTime = 4;                     //传作时间
-    uint32 AuthorId = 5;                        //作者id
-    string AuthorName = 6;                      //作者id
-    string AuthorAvatar = 7;                    //作者头像
-    uint32 GreatNum = 8;                        //点赞数
+    string ShortContent = 3;                    //短内容
+    string Content = 4;                         //文章内容
+    repeated string Images = 5;                 //文章图片
+    int64 CreationTime = 6;                     //传作时间
+    uint32 AuthorId = 7;                        //作者id
+    string AuthorName = 8;                      //作者id
+    string AuthorAvatar = 9;                    //作者头像
+    uint32 GreatNum = 10;                       //点赞数
+    uint32 Messagenum =11;                      //消息数
 }

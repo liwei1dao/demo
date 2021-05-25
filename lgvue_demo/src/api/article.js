@@ -31,3 +31,10 @@ export function getauthoIrdarticles (data) {
   })
 }
 
+export function getlastarticles (data) {
+  return request({
+    url: '/lego/article/getlastarticles',
+    method: 'post',
+    data
+  })
+}

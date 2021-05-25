@@ -20,6 +20,8 @@ type (
 		QueryArticle(aId uint32) (result *pb.DB_ArticleData, err error)
 		//查询文章
 		QueryArticles(aId []uint32) (result []*pb.DB_ArticleData, err error)
+		//查询最新文章
+		QueryArticlesByLast(start int64, num int64) (result []*pb.DB_ArticleData, err error)
 	}
 	ArticleId struct {
 		Id uint32 `bson:"_id"`
@@ -95,4 +97,9 @@ func QueryArticle(aId uint32) (result *pb.DB_ArticleData, err error) {
 
 func QueryArticles(aId []uint32) (result []*pb.DB_ArticleData, err error) {
 	return defsys.QueryArticles(aId)
+}
+
+//查询最新文章
+func QueryArticlesByLast(start int64, num int64) (result []*pb.DB_ArticleData, err error) {
+	return defsys.QueryArticlesByLast(start, num)
 }

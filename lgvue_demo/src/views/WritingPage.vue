@@ -14,28 +14,26 @@
                               class="overflow-y-auto"
                               max-height="720">
                   <template v-for="(item,i) in articles">
-                    <v-hover v-slot="{ hover }"
-                             :key="i">
-                      <v-card class="pa-2 mb-2"
-                              @click="getarticlehandle(i)"
-                              v-ripple>
-                        <v-card class="text-h5 mb-2"
-                                flat>
-                          {{item.Title}}
-                        </v-card>
-                        <v-card class="mt-1 text-justify text--disabled"
-                                width="100%"
-                                flat>
-                          {{item.Content | ellipsis}}
-                        </v-card>
-                        <v-divider class="mt-2"></v-divider>
-                        <v-card class="d-flex justify-end mt-1"
-                                flat>
-                          <v-card class="text--disabled"
-                                  flat>{{item.CreationTime|formatDate}}</v-card>
-                        </v-card>
+                    <v-card class=" pa-2"
+                            :key="i"
+                            @click="getarticlehandle(i)"
+                            outlined>
+                      <v-card class="text-h5 mb-2 transparent"
+                              flat>
+                        {{item.Title}}
                       </v-card>
-                    </v-hover>
+                      <v-card class="mt-1 text-justify text--disabled transparent"
+                              width="100%"
+                              flat>
+                        {{item.Content | ellipsis}}
+                      </v-card>
+                      <v-divider class="mt-2"></v-divider>
+                      <v-card class="d-flex justify-end mt-1 transparent"
+                              flat>
+                        <v-card class="text--disabled transparent"
+                                flat>{{item.CreationTime|formatDate}}</v-card>
+                      </v-card>
+                    </v-card>
                   </template>
                 </v-responsive>
                 <v-card v-else
@@ -52,7 +50,7 @@
                    dark
                    block>添加新的文章</v-btn>
             <v-btn class="mt-2 green"
-                   @click="restarteditor"
+                   @click="deleteArticle"
                    :disabled="currarticle.Id == 0 ? true:false"
                    block>删除文章</v-btn>
           </v-col>
@@ -99,12 +97,13 @@ export default {
   },
   data: () => {
     return {
-      currindex: -1,
       articles: [],
       currarticle: {
         Id: 0,
         Title: "",
         Content: "",
+        ShortContent: "",
+        Images: [],
         CreationTime: 0,
       },
       img_file: {}
@@ -132,6 +131,7 @@ export default {
     // 绑定@imgAdd event
     $imgAdd (pos, $file) {
       // 缓存图片信息
+      console.log("添加图片" + $file)
       this.img_file[pos] = $file;
     },
     $imgDel (pos) {
@@ -165,14 +165,17 @@ export default {
       // getarticle({ ArticleId: aid }).then(response => {
       //   this.article = response.data
       // })
-      this.currindex = i
       this.currarticle = this.articles[i]
     },
     saveearticle () {
-      createarticle({ ArticleId: this.currarticle.Id, Title: this.currarticle.Title, Content: this.currarticle.Content }).then(response => {
+      this.getmdimage()
+      this.getshortContent()
+      createarticle({ ArticleId: this.currarticle.Id, Title: this.currarticle.Title, Content: this.currarticle.Content, ShortContent: this.currarticle.ShortContent, Images: this.currarticle.Images }).then(response => {
         if (response.data.Id != this.currarticle.Id) {
           this.articles.push(response.data)
         }
+        const { message } = response
+        this.$message.success(message)
       })
     },
     releasearticle () {
@@ -180,13 +183,19 @@ export default {
     },
     deleteArticle () {
       deletearticle({ ArticleId: this.currarticle.Id }).then(response => {
-        this.articles.splice(currindex, 1);
+        for (let i = 0, len = this.articles.length; i < len; i++) {
+          if (this.articles[i].Id == response.data.Id) {
+            this.articles.splice(i, 1);
+          }
+        }
         this.currarticle = {
           Id: 0,
           Title: "",
           Content: "",
           CreationTime: 0,
         }
+        const { message } = response
+        this.$message.success(message)
       })
     },
     restarteditor () {
@@ -196,8 +205,38 @@ export default {
         Content: "",
         CreationTime: 0,
       }
+    },
+    getmdimage () {
+      const pattern = /!\[(.*?)\]\((.*?)\)/mg;
+      let matcher;
+      this.currarticle.Images = []
+      while ((matcher = pattern.exec(this.currarticle.Content)) !== null) {
+        this.currarticle.Images.push(matcher[2])
+      }
+      console.log(this.currarticle.Images)
+    },
+    getshortContent () {
+      if (this.currarticle.Content != "") {
+        var str = this.currarticle.Content.replace(/(\*\*|__)(.*?)(\*\*|__)/g, '')          //全局匹配内粗体
+          .replace(/\!\[[\s\S]*?\]\([\s\S]*?\)/g, '')                  //全局匹配图片
+          .replace(/\[[\s\S]*?\]\([\s\S]*?\)/g, '')                    //全局匹配连接
+          .replace(/<\/?.+?\/?>/g, '')                                 //全局匹配内html标签
+          .replace(/(\*)(.*?)(\*)/g, '')                               //全局匹配内联代码块
+          .replace(/`{1,2}[^`](.*?)`{1,2}/g, '')                       //全局匹配内联代码块
+          .replace(/```([\s\S]*?)```[\s]*/g, '')                       //全局匹配代码块
+          .replace(/\~\~(.*?)\~\~/g, '')                               //全局匹配删除线
+          .replace(/[\s]*[-\*\+]+(.*)/g, '')                           //全局匹配无序列表
+          .replace(/[\s]*[0-9]+\.(.*)/g, '')                           //全局匹配有序列表
+          .replace(/(#+)(.*)/g, '')                                    //全局匹配标题
+          .replace(/(>+)(.*)/g, '')                                    //全局匹配摘要
+          .replace(/\r\n/g, "")                                        //全局匹配换行
+          .replace(/\n/g, "")                                          //全局匹配换行
+          .replace(/\s/g, "")                                          //全局匹配空字符;
+        this.currarticle.ShortContent = str.slice(0, 155);
+      }
     }
-  }
+  },
+
 }
 </script>
 

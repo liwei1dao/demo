@@ -30,7 +30,7 @@
               <template v-if="userinfo">
                 <v-btn class="text-h5  ml-6 red--text"
                        rounded
-                       to='/console/index'
+                       to='/components/message'
                        outlined
                        height="100%"
                        text>

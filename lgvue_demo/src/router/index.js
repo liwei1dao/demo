@@ -42,6 +42,12 @@ const staticRoutes = [
         path: 'writing',
         component: () => import('@/views/WritingPage.vue'),
         meta: { title: 'WritingPage', icon: 'mdi-home-floor-b', role: Role.Guester },
+      },
+      {
+
+        path: 'articleI',
+        component: () => import('@/views/ArticleIPage.vue'),
+        meta: { title: 'ArticleIPage', icon: 'mdi-home-floor-b', role: Role.Guester },
       }
     ]
   },
