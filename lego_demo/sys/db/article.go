@@ -22,6 +22,7 @@ func (this *DB) DB_CreateOrUpDateArticle(data *pb.DB_ArticleData) (result *pb.DB
 		AuthorName:   data.AuthorName,
 		AuthorAvatar: data.AuthorAvatar,
 		GreatNum:     data.GreatNum,
+		Staet:        data.Staet,
 	}
 	if result.Id == 0 {
 		var newuId ArticleId
@@ -42,6 +43,7 @@ func (this *DB) DB_CreateOrUpDateArticle(data *pb.DB_ArticleData) (result *pb.DB
 			"authorId":     result.AuthorId,
 			"authorname":   result.AuthorName,
 			"authoravatar": result.AuthorAvatar,
+			"staet":        result.Staet,
 			"greatnum":     result.GreatNum}},
 		new(options.UpdateOptions).SetUpsert(true))
 	return
@@ -82,6 +84,25 @@ func (this *DB) QueryArticlesByLast(start int64, num int64) (result []*pb.DB_Art
 	)
 	result = make([]*pb.DB_ArticleData, 0)
 	if cursor, err = this.mgo.Find(Sql_ArticleDataIdTable, bson.M{}, new(options.FindOptions).SetSkip(start).SetLimit(num).
+		SetSort(bson.M{"creationtime": -1}).SetProjection(bson.M{})); err == nil {
+		if err = cursor.Err(); err == nil {
+			for cursor.Next(context.Background()) {
+				temp := &pb.DB_ArticleData{}
+				cursor.Decode(temp)
+				result = append(result, temp)
+			}
+		}
+	}
+	return
+}
+
+//查询文章 by state
+func (this *DB) QueryArticlesByState(state pb.ArticleState, start int64, num int64) (result []*pb.DB_ArticleData, err error) {
+	var (
+		cursor *mongo.Cursor
+	)
+	result = make([]*pb.DB_ArticleData, 0)
+	if cursor, err = this.mgo.Find(Sql_ArticleDataIdTable, bson.M{"staet": state}, new(options.FindOptions).SetSkip(start).SetLimit(num).
 		SetSort(bson.M{"creationtime": -1}).SetProjection(bson.M{})); err == nil {
 		if err = cursor.Err(); err == nil {
 			for cursor.Next(context.Background()) {

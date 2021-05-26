@@ -25,6 +25,58 @@ const (
 // of the legacy proto package is being used.
 const _ = proto.ProtoPackageIsVersion4
 
+type ArticleState int32
+
+const (
+	ArticleState_Draft    ArticleState = 0 //草稿
+	ArticleState_Review   ArticleState = 1 //审核
+	ArticleState_Release  ArticleState = 2 //发布
+	ArticleState_OffShelf ArticleState = 3 //下架
+)
+
+// Enum value maps for ArticleState.
+var (
+	ArticleState_name = map[int32]string{
+		0: "Draft",
+		1: "Review",
+		2: "Release",
+		3: "OffShelf",
+	}
+	ArticleState_value = map[string]int32{
+		"Draft":    0,
+		"Review":   1,
+		"Release":  2,
+		"OffShelf": 3,
+	}
+)
+
+func (x ArticleState) Enum() *ArticleState {
+	p := new(ArticleState)
+	*p = x
+	return p
+}
+
+func (x ArticleState) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ArticleState) Descriptor() protoreflect.EnumDescriptor {
+	return file_db_article_proto_enumTypes[0].Descriptor()
+}
+
+func (ArticleState) Type() protoreflect.EnumType {
+	return &file_db_article_proto_enumTypes[0]
+}
+
+func (x ArticleState) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ArticleState.Descriptor instead.
+func (ArticleState) EnumDescriptor() ([]byte, []int) {
+	return file_db_article_proto_rawDescGZIP(), []int{0}
+}
+
 //作者
 type DB_AuthorData struct {
 	state         protoimpl.MessageState
@@ -113,22 +165,25 @@ func (x *DB_AuthorData) GetArticleIds() []uint32 {
 	return nil
 }
 
+//文章
 type DB_ArticleData struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id           uint32   `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty" bson:"_id"`                     //tags:{bson:"_id"}文章id
-	Title        string   `protobuf:"bytes,2,opt,name=Title,proto3" json:"Title,omitempty"`                //文章标题
-	ShortContent string   `protobuf:"bytes,3,opt,name=ShortContent,proto3" json:"ShortContent,omitempty"`  //短内容
-	Content      string   `protobuf:"bytes,4,opt,name=Content,proto3" json:"Content,omitempty"`            //文章内容
-	Images       []string `protobuf:"bytes,5,rep,name=Images,proto3" json:"Images,omitempty"`              //文章图片
-	CreationTime int64    `protobuf:"varint,6,opt,name=CreationTime,proto3" json:"CreationTime,omitempty"` //传作时间
-	AuthorId     uint32   `protobuf:"varint,7,opt,name=AuthorId,proto3" json:"AuthorId,omitempty"`         //作者id
-	AuthorName   string   `protobuf:"bytes,8,opt,name=AuthorName,proto3" json:"AuthorName,omitempty"`      //作者id
-	AuthorAvatar string   `protobuf:"bytes,9,opt,name=AuthorAvatar,proto3" json:"AuthorAvatar,omitempty"`  //作者头像
-	GreatNum     uint32   `protobuf:"varint,10,opt,name=GreatNum,proto3" json:"GreatNum,omitempty"`        //点赞数
-	Messagenum   uint32   `protobuf:"varint,11,opt,name=Messagenum,proto3" json:"Messagenum,omitempty"`    //消息数
+	Id           uint32       `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty" bson:"_id"`                           //tags:{bson:"_id"}文章id
+	Title        string       `protobuf:"bytes,2,opt,name=Title,proto3" json:"Title,omitempty"`                      //文章标题
+	ShortContent string       `protobuf:"bytes,3,opt,name=ShortContent,proto3" json:"ShortContent,omitempty"`        //短内容
+	Content      string       `protobuf:"bytes,4,opt,name=Content,proto3" json:"Content,omitempty"`                  //文章内容
+	Images       []string     `protobuf:"bytes,5,rep,name=Images,proto3" json:"Images,omitempty"`                    //文章图片
+	CreationTime int64        `protobuf:"varint,6,opt,name=CreationTime,proto3" json:"CreationTime,omitempty"`       //传作时间
+	AuthorId     uint32       `protobuf:"varint,7,opt,name=AuthorId,proto3" json:"AuthorId,omitempty"`               //作者id
+	AuthorName   string       `protobuf:"bytes,8,opt,name=AuthorName,proto3" json:"AuthorName,omitempty"`            //作者id
+	AuthorAvatar string       `protobuf:"bytes,9,opt,name=AuthorAvatar,proto3" json:"AuthorAvatar,omitempty"`        //作者头像
+	GreatNum     uint32       `protobuf:"varint,10,opt,name=GreatNum,proto3" json:"GreatNum,omitempty"`              //点赞数
+	RewardNum    uint32       `protobuf:"varint,11,opt,name=RewardNum,proto3" json:"RewardNum,omitempty"`            //打赏数
+	CommentList  []uint32     `protobuf:"varint,12,rep,packed,name=CommentList,proto3" json:"CommentList,omitempty"` //评论Id
+	Staet        ArticleState `protobuf:"varint,13,opt,name=Staet,proto3,enum=ArticleState" json:"Staet,omitempty"`  //状态
 }
 
 func (x *DB_ArticleData) Reset() {
@@ -233,11 +288,121 @@ func (x *DB_ArticleData) GetGreatNum() uint32 {
 	return 0
 }
 
-func (x *DB_ArticleData) GetMessagenum() uint32 {
+func (x *DB_ArticleData) GetRewardNum() uint32 {
 	if x != nil {
-		return x.Messagenum
+		return x.RewardNum
 	}
 	return 0
+}
+
+func (x *DB_ArticleData) GetCommentList() []uint32 {
+	if x != nil {
+		return x.CommentList
+	}
+	return nil
+}
+
+func (x *DB_ArticleData) GetStaet() ArticleState {
+	if x != nil {
+		return x.Staet
+	}
+	return ArticleState_Draft
+}
+
+//评论
+type DB_CommentData struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id               uint32   `protobuf:"varint,1,opt,name=Id,proto3" json:"Id,omitempty" bson:"_id"`                                    //tags:{bson:"_id"}文章id
+	UserId           uint32   `protobuf:"varint,3,opt,name=UserId,proto3" json:"UserId,omitempty"`                            //用户Id
+	ArticleId        uint32   `protobuf:"varint,4,opt,name=ArticleId,proto3" json:"ArticleId,omitempty"`                      //文章Id
+	CreationTime     int64    `protobuf:"varint,5,opt,name=CreationTime,proto3" json:"CreationTime,omitempty"`                //评论时间
+	Content          string   `protobuf:"bytes,6,opt,name=Content,proto3" json:"Content,omitempty"`                           //文章内容
+	ParentCommentId  uint32   `protobuf:"varint,7,opt,name=ParentCommentId,proto3" json:"ParentCommentId,omitempty"`          //父评论Id
+	ChildCommentList []uint32 `protobuf:"varint,8,rep,packed,name=ChildCommentList,proto3" json:"ChildCommentList,omitempty"` //子评论列表
+}
+
+func (x *DB_CommentData) Reset() {
+	*x = DB_CommentData{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_db_article_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DB_CommentData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DB_CommentData) ProtoMessage() {}
+
+func (x *DB_CommentData) ProtoReflect() protoreflect.Message {
+	mi := &file_db_article_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DB_CommentData.ProtoReflect.Descriptor instead.
+func (*DB_CommentData) Descriptor() ([]byte, []int) {
+	return file_db_article_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DB_CommentData) GetId() uint32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *DB_CommentData) GetUserId() uint32 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *DB_CommentData) GetArticleId() uint32 {
+	if x != nil {
+		return x.ArticleId
+	}
+	return 0
+}
+
+func (x *DB_CommentData) GetCreationTime() int64 {
+	if x != nil {
+		return x.CreationTime
+	}
+	return 0
+}
+
+func (x *DB_CommentData) GetContent() string {
+	if x != nil {
+		return x.Content
+	}
+	return ""
+}
+
+func (x *DB_CommentData) GetParentCommentId() uint32 {
+	if x != nil {
+		return x.ParentCommentId
+	}
+	return 0
+}
+
+func (x *DB_CommentData) GetChildCommentList() []uint32 {
+	if x != nil {
+		return x.ChildCommentList
+	}
+	return nil
 }
 
 var File_db_article_proto protoreflect.FileDescriptor
@@ -256,7 +421,7 @@ var file_db_article_proto_rawDesc = []byte{
 	0x61, 0x64, 0x55, 0x72, 0x6c, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x48, 0x65, 0x61,
 	0x64, 0x55, 0x72, 0x6c, 0x12, 0x1e, 0x0a, 0x0a, 0x41, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65, 0x49,
 	0x64, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0d, 0x52, 0x0a, 0x41, 0x72, 0x74, 0x69, 0x63, 0x6c,
-	0x65, 0x49, 0x64, 0x73, 0x22, 0xcc, 0x02, 0x0a, 0x0e, 0x44, 0x42, 0x5f, 0x41, 0x72, 0x74, 0x69,
+	0x65, 0x49, 0x64, 0x73, 0x22, 0x91, 0x03, 0x0a, 0x0e, 0x44, 0x42, 0x5f, 0x41, 0x72, 0x74, 0x69,
 	0x63, 0x6c, 0x65, 0x44, 0x61, 0x74, 0x61, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x0d, 0x52, 0x02, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x54, 0x69, 0x74, 0x6c, 0x65,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x54, 0x69, 0x74, 0x6c, 0x65, 0x12, 0x22, 0x0a,
@@ -275,10 +440,33 @@ var file_db_article_proto_rawDesc = []byte{
 	0x74, 0x61, 0x72, 0x18, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x41, 0x75, 0x74, 0x68, 0x6f,
 	0x72, 0x41, 0x76, 0x61, 0x74, 0x61, 0x72, 0x12, 0x1a, 0x0a, 0x08, 0x47, 0x72, 0x65, 0x61, 0x74,
 	0x4e, 0x75, 0x6d, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x08, 0x47, 0x72, 0x65, 0x61, 0x74,
-	0x4e, 0x75, 0x6d, 0x12, 0x1e, 0x0a, 0x0a, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x6e, 0x75,
-	0x6d, 0x18, 0x0b, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x0a, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x6e, 0x75, 0x6d, 0x42, 0x06, 0x5a, 0x04, 0x2e, 0x3b, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x4e, 0x75, 0x6d, 0x12, 0x1c, 0x0a, 0x09, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x4e, 0x75, 0x6d,
+	0x18, 0x0b, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x09, 0x52, 0x65, 0x77, 0x61, 0x72, 0x64, 0x4e, 0x75,
+	0x6d, 0x12, 0x20, 0x0a, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74,
+	0x18, 0x0c, 0x20, 0x03, 0x28, 0x0d, 0x52, 0x0b, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c,
+	0x69, 0x73, 0x74, 0x12, 0x23, 0x0a, 0x05, 0x53, 0x74, 0x61, 0x65, 0x74, 0x18, 0x0d, 0x20, 0x01,
+	0x28, 0x0e, 0x32, 0x0d, 0x2e, 0x41, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65, 0x53, 0x74, 0x61, 0x74,
+	0x65, 0x52, 0x05, 0x53, 0x74, 0x61, 0x65, 0x74, 0x22, 0xea, 0x01, 0x0a, 0x0e, 0x44, 0x42, 0x5f,
+	0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x44, 0x61, 0x74, 0x61, 0x12, 0x0e, 0x0a, 0x02, 0x49,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x02, 0x49, 0x64, 0x12, 0x16, 0x0a, 0x06, 0x55,
+	0x73, 0x65, 0x72, 0x49, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x55, 0x73, 0x65,
+	0x72, 0x49, 0x64, 0x12, 0x1c, 0x0a, 0x09, 0x41, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65, 0x49, 0x64,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x09, 0x41, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65, 0x49,
+	0x64, 0x12, 0x22, 0x0a, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x54, 0x69, 0x6d,
+	0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x54, 0x69, 0x6d, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74,
+	0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x43, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, 0x12,
+	0x28, 0x0a, 0x0f, 0x50, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74,
+	0x49, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x0f, 0x50, 0x61, 0x72, 0x65, 0x6e, 0x74,
+	0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x49, 0x64, 0x12, 0x2a, 0x0a, 0x10, 0x43, 0x68, 0x69,
+	0x6c, 0x64, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x08, 0x20,
+	0x03, 0x28, 0x0d, 0x52, 0x10, 0x43, 0x68, 0x69, 0x6c, 0x64, 0x43, 0x6f, 0x6d, 0x6d, 0x65, 0x6e,
+	0x74, 0x4c, 0x69, 0x73, 0x74, 0x2a, 0x40, 0x0a, 0x0c, 0x41, 0x72, 0x74, 0x69, 0x63, 0x6c, 0x65,
+	0x53, 0x74, 0x61, 0x74, 0x65, 0x12, 0x09, 0x0a, 0x05, 0x44, 0x72, 0x61, 0x66, 0x74, 0x10, 0x00,
+	0x12, 0x0a, 0x0a, 0x06, 0x52, 0x65, 0x76, 0x69, 0x65, 0x77, 0x10, 0x01, 0x12, 0x0b, 0x0a, 0x07,
+	0x52, 0x65, 0x6c, 0x65, 0x61, 0x73, 0x65, 0x10, 0x02, 0x12, 0x0c, 0x0a, 0x08, 0x4f, 0x66, 0x66,
+	0x53, 0x68, 0x65, 0x6c, 0x66, 0x10, 0x03, 0x42, 0x06, 0x5a, 0x04, 0x2e, 0x3b, 0x70, 0x62, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -293,17 +481,21 @@ func file_db_article_proto_rawDescGZIP() []byte {
 	return file_db_article_proto_rawDescData
 }
 
-var file_db_article_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_db_article_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_db_article_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_db_article_proto_goTypes = []interface{}{
-	(*DB_AuthorData)(nil),  // 0: DB_AuthorData
-	(*DB_ArticleData)(nil), // 1: DB_ArticleData
+	(ArticleState)(0),      // 0: ArticleState
+	(*DB_AuthorData)(nil),  // 1: DB_AuthorData
+	(*DB_ArticleData)(nil), // 2: DB_ArticleData
+	(*DB_CommentData)(nil), // 3: DB_CommentData
 }
 var file_db_article_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: DB_ArticleData.Staet:type_name -> ArticleState
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_db_article_proto_init() }
@@ -336,19 +528,32 @@ func file_db_article_proto_init() {
 				return nil
 			}
 		}
+		file_db_article_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DB_CommentData); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_db_article_proto_rawDesc,
-			NumEnums:      0,
-			NumMessages:   2,
+			NumEnums:      1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_db_article_proto_goTypes,
 		DependencyIndexes: file_db_article_proto_depIdxs,
+		EnumInfos:         file_db_article_proto_enumTypes,
 		MessageInfos:      file_db_article_proto_msgTypes,
 	}.Build()
 	File_db_article_proto = out.File

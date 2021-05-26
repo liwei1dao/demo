@@ -9,6 +9,14 @@ message CreateArticleReq {
   repeated string Images = 5;
 }
 
+message ReleaseArticleReq {
+  uint32 ArticleId = 1;
+  string Title = 2;
+  string ShortContent = 3;
+  string Content = 4;
+  repeated string Images = 5;
+}
+
 message DeleteArticleReq {
   uint32 ArticleId = 1;
 }

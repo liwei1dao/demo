@@ -32,6 +32,7 @@ const (
 	Sql_ArticleIdDataIdTable core.SqlTable = "articleid" //文章Id
 	Sql_ArticleDataIdTable   core.SqlTable = "article"   //文章
 	Sql_AuthorDataIdTable    core.SqlTable = "author"    //作者
+	Sql_CommentDataIdTable   core.SqlTable = "comment"   //评论
 )
 
 var (

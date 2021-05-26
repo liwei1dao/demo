@@ -74,3 +74,8 @@ func (this *DB) DeleteArticle(AuthoIrdId uint32, ArticlesId uint32) (err error) 
 	}
 	return
 }
+
+//评论文章
+func (this *DB) CommentArticle(ArticlesId uint32, Content string) {
+	
+}

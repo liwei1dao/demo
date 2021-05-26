@@ -45,7 +45,7 @@ const staticRoutes = [
       },
       {
 
-        path: 'articleI',
+        path: 'articleI/:id',
         component: () => import('@/views/ArticleIPage.vue'),
         meta: { title: 'ArticleIPage', icon: 'mdi-home-floor-b', role: Role.Guester },
       }
@@ -106,9 +106,9 @@ const Dynamicroutes = [
     meta: { title: 'Operation', icon: 'mdi-video-input-component', role: Role.Guester },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/operation/index.vue'),
-        meta: { title: 'Information', icon: 'mdi-message-processing-outline', role: Role.Guester },
+        path: 'awitereview',
+        component: () => import('@/views/operation/awitereview.vue'),
+        meta: { title: 'Awitereview', icon: 'mdi-message-processing-outline', role: Role.Guester },
       },
     ]
   }

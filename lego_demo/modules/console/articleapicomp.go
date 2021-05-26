@@ -22,6 +22,7 @@ func (this *ArticleApiComp) Init(service core.IService, module core.IModule, com
 	this.module = module.(console.IConsole)
 	api := this.module.Group("/lego/article")
 	api.POST("/createarticle", this.module.CheckToken, this.CreateArticleReq)
+	api.POST("/releasearticle", this.module.CheckToken, this.ReleaseArticleReq)
 	api.POST("/deletearticle", this.module.CheckToken, this.DeleteArticleReq)
 	api.POST("/getarticle", this.module.CheckToken, this.GetArticleReq)
 	api.POST("/getauthoIrdarticles", this.module.CheckToken, this.GetAuthoIrdArticlesReq)
@@ -52,6 +53,41 @@ func (this *ArticleApiComp) CreateArticleReq(c *http.Context) {
 			AuthorName:   user.Db_UserData.NickName,
 			AuthorAvatar: user.Db_UserData.HeadUrl,
 			GreatNum:     0,
+			Staet:        pb.ArticleState_Draft,
+		}
+		if article, err = db.CreateOrUpDateArticle(article); err == nil {
+			this.module.HttpStatusOK(c, core.ErrorCode_Success, article)
+		} else {
+			log.Errorf("CreateArticleReq err:%v", err)
+			this.module.HttpStatusOK(c, core.ErrorCode_SqlExecutionError, nil)
+		}
+	}
+}
+
+//发布文章
+func (this *ArticleApiComp) ReleaseArticleReq(c *http.Context) {
+	uId := c.GetUInt32(console.UserKey)
+	req := &pb.ReleaseArticleReq{}
+	c.ShouldBindJSON(req)
+	defer log.Debugf("ReleaseArticleReq:%+v", req)
+	var (
+		user    *console.Cache_UserData
+		article *pb.DB_ArticleData
+		err     error
+	)
+	if user, err = this.module.Cache().QueryUserData(uId); err == nil {
+		article = &pb.DB_ArticleData{
+			Id:           req.ArticleId,
+			Title:        req.Title,
+			Content:      req.Content,
+			ShortContent: req.ShortContent,
+			Images:       req.Images,
+			CreationTime: time.Now().Unix(),
+			AuthorId:     uId,
+			AuthorName:   user.Db_UserData.NickName,
+			AuthorAvatar: user.Db_UserData.HeadUrl,
+			GreatNum:     0,
+			Staet:        pb.ArticleState_Review,
 		}
 		if article, err = db.CreateOrUpDateArticle(article); err == nil {
 			this.module.HttpStatusOK(c, core.ErrorCode_Success, article)

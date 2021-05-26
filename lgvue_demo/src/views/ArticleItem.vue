@@ -102,7 +102,7 @@ export default {
   methods: {
     gotoArticle () {
       this.$router.push({
-        path: `/articleI`,
+        path: `/articleI/${this.article.Id}`,
       })
     }
   }

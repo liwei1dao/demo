@@ -39,7 +39,7 @@ service.interceptors.response.use(
       if (res.code == 101) {
         async () => {
           await store.dispatch('user/resetToken')
-          router.push({ path: '/' })
+          router.push({ path: '/login' })
         }
       } else {
         Message.error(res.message || 'Error')

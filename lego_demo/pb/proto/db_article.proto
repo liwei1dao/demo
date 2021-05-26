@@ -1,6 +1,13 @@
 syntax = "proto3";
 option go_package = ".;pb";
 
+enum ArticleState {
+  Draft = 0;                              //草稿
+  Review = 1;                             //审核
+  Release = 2;                            //发布
+  OffShelf = 3;                           //下架
+}
+
 //作者
 message DB_AuthorData {
   uint32 AuthoIrd = 1;                        //tags:{bson:"_id"}作者id
@@ -11,6 +18,7 @@ message DB_AuthorData {
   repeated uint32 ArticleIds = 6;             //文章列表
 }
 
+//文章
 message DB_ArticleData {
     uint32 Id = 1;                              //tags:{bson:"_id"}文章id
     string Title = 2;                           //文章标题
@@ -22,5 +30,18 @@ message DB_ArticleData {
     string AuthorName = 8;                      //作者id
     string AuthorAvatar = 9;                    //作者头像
     uint32 GreatNum = 10;                       //点赞数
-    uint32 Messagenum =11;                      //消息数
+    uint32 RewardNum = 11;                      //打赏数
+    repeated uint32 CommentList =12;            //评论Id
+    ArticleState Staet = 13;                    //状态
+}
+
+//评论
+message DB_CommentData {
+    uint32 Id = 1;                              //tags:{bson:"_id"}文章id
+    uint32 UserId = 3;                          //用户Id
+    uint32 ArticleId = 4;                       //文章Id
+    int64 CreationTime = 5;                     //评论时间
+    string Content = 6;                         //文章内容
+    uint32 ParentCommentId = 7;                 //父评论Id
+    repeated uint32 ChildCommentList = 8;       //子评论列表
 }
