@@ -9,6 +9,9 @@ module.exports = {
   transpileDependencies: [
     'vuetify'
   ],
+  publicPath: './',
+  outputDir: '../docker_demo/vue_demo',
+  assetsDir: 'static',
   devServer: {
     port: 8080,
     open: true,

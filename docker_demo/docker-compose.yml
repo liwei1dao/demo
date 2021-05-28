@@ -1,0 +1,88 @@
+version: "3.7"
+
+# 申明同一个网络
+networks:
+  net:
+    name: net
+
+# 游戏数据卷
+volumes:
+  nginxdata:
+    name: nginxdata
+
+# 服务
+services:
+  go_console:
+    image: golang:alpine
+    container_name: go_console
+    networks:
+      net:
+        aliases:
+          - go_console
+    ports:
+      - 9567:9567
+    volumes:
+      - ./go_demo:/usr/local/go_demo
+    # depends_on:
+      # - nats
+      # - consul
+      # - mongo
+      # - redis
+    working_dir: /usr/local/go_demo
+    entrypoint: ["./console", "-sId", "console_1"]
+  go_gate:
+    image: golang:alpine
+    container_name: go_gate
+    networks:
+      net:
+        aliases:
+          - go_gate
+    ports:
+      - 9091:9091
+    volumes:
+      - ./go_demo:/usr/local/go_demo
+    # depends_on:
+      # - nats
+      # - consul
+      # - mongo
+      # - redis
+    working_dir: /usr/local/go_demo
+    entrypoint: ["./gate", "-sId", "gate_1"]
+  go_live:
+    image: golang:alpine
+    container_name: go_live
+    networks:
+      net:
+        aliases:
+          - go_live
+    ports:
+      - 8090:8090
+      - 1935:1935
+      - 7001-7002:7001-7002
+    volumes:
+      - ./go_demo:/usr/local/go_demo
+    # depends_on:
+      # - nats
+      # - consul
+      # - mongo
+      # - redis
+    working_dir: /usr/local/go_demo
+    entrypoint: ["./live", "-sId", "live_1"]
+  vue_demo:
+    image: nginx:latest
+    container_name: vue_demo
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./vue_demo:/usr/share/nginx/web
+      - ./vue_demo/log/:/var/log/nginx/:rw
+      - nginxdata/:/var/cache/nginx
+      - nginxdata/:/run
+    networks:
+      net:
+        aliases:
+          - vue_demo
+    ports:
+      - 80:80
+    depends_on:
+      - go_console

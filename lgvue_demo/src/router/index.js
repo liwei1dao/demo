@@ -108,7 +108,7 @@ const Dynamicroutes = [
       {
         path: 'awitereview',
         component: () => import('@/views/operation/awitereview.vue'),
-        meta: { title: 'Awitereview', icon: 'mdi-message-processing-outline', role: Role.Guester },
+        meta: { title: 'AwiteReview', icon: 'mdi-message-processing-outline', role: Role.Guester },
       },
     ]
   }
