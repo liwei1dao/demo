@@ -21,3 +21,4 @@
 */obj/
 */node_modules/
 *.log
+docker_demo/go_demo

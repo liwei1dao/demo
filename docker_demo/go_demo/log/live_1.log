@@ -1,15 +1,15 @@
-2021/05/28 03:41:58.219	INFO	cluster/service.go:80	Sys log Init success !
-2021/05/28 03:41:58.223	INFO	cluster/service.go:85	Sys event Init success !
-2021/05/28 03:41:58.223	INFO	cluster/service.go:90	Sys cron Init success !
-2021/05/28 03:41:58.228	INFO	cluster/service.go:95	Sys registry Init success !
-2021/05/28 03:41:58.230	INFO	cluster/service.go:100	Sys rpc Init success !
-2021/05/28 03:41:58.230	INFO	services/servicebase.go:21	Sys event Init success !
-2021/05/28 03:41:58.522	INFO	services/servicebase.go:26	Sys db Init success !
-2021/05/28 03:41:58.522	INFO	cbase/servicebase.go:62	服务[live_1] 初始化完成!
-2021/05/28 03:41:58.522	INFO	cbase/servicebase.go:84	服务[live_1] 启动完成!
-2021/05/28 03:41:58.523	WARN	cbase/servicebase.go:102	注册模块【SM_MonitorModule】 没有对应的配置信息
-2021/05/28 03:41:58.539	INFO	live/api_comp.go:70	HTTP-API listen On :8090
-2021/05/28 03:41:58.539	INFO	live/hls_comp.go:75	HLS listen On :7002
-2021/05/28 03:41:58.539	INFO	live/httpflv_comp.go:48	HTTP-FLV listen On :7001
-2021/05/28 05:59:30.472	ERROR	cbase/servicebase.go:139	服务[live_1] 关闭 signal = terminated
+2021/05/29 03:36:35.465	INFO	cluster/service.go:80	Sys log Init success !
+2021/05/29 03:36:35.472	INFO	cluster/service.go:85	Sys event Init success !
+2021/05/29 03:36:35.473	INFO	cluster/service.go:90	Sys cron Init success !
+2021/05/29 03:36:35.477	INFO	cluster/service.go:95	Sys registry Init success !
+2021/05/29 03:36:35.497	INFO	cluster/service.go:100	Sys rpc Init success !
+2021/05/29 03:36:35.498	INFO	services/servicebase.go:21	Sys event Init success !
+2021/05/29 03:36:35.869	INFO	services/servicebase.go:26	Sys db Init success !
+2021/05/29 03:36:35.870	INFO	cbase/servicebase.go:62	服务[live_1] 初始化完成!
+2021/05/29 03:36:35.870	INFO	cbase/servicebase.go:84	服务[live_1] 启动完成!
+2021/05/29 03:36:35.870	WARN	cbase/servicebase.go:102	注册模块【SM_MonitorModule】 没有对应的配置信息
+2021/05/29 03:36:35.888	INFO	live/api_comp.go:70	HTTP-API listen On :8090
+2021/05/29 03:36:35.888	INFO	live/hls_comp.go:75	HLS listen On :7002
+2021/05/29 03:36:35.888	INFO	live/httpflv_comp.go:48	HTTP-FLV listen On :7001
+2021/05/29 03:48:48.599	ERROR	cbase/servicebase.go:139	服务[live_1] 关闭 signal = terminated
 

@@ -19,7 +19,7 @@ ConsulAddr = "discovery:8500"       #Consul服务地址
 [Sys.rpc]
 NatsAddr = "nats://nats:4222"  #Nats服务地址
 [Sys.db]
-MongodbUrl = "mongodb://db:27017"
+MongodbUrl = "mongodb://liwei1dao:li13451234@192.168.0.106:37017,192.168.0.106:37018,192.168.0.106:37019/admin?replicaSet=mongoReplSet"
 MongodbDatabase = "demo"
 
 
@@ -27,7 +27,8 @@ MongodbDatabase = "demo"
 HttpAddr = ":9567"                          #web端口
 RedisUrl = "cache:6379"
 RedisDB = 1
-MongodbUrl = "mongodb://db:27017"
+RedisPassword = "li13451234"
+MongodbUrl = "mongodb://liwei1dao:li13451234@192.168.0.106:37017,192.168.0.106:37018,192.168.0.106:37019/admin?replicaSet=mongoReplSet"
 MongodbDatabase = "demo"
 MailServerhost = "smtp.qq.com"
 MailFromemail = "liwei1dao@foxmail.com"

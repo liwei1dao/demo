@@ -19,7 +19,7 @@ ConsulAddr = "discovery:8500"
 [Sys.rpc]
 NatsAddr = "nats://nats:4222"
 [Sys.db]
-MongodbUrl = "mongodb://db:27017"
+MongodbUrl = "mongodb://liwei1dao:li13451234@192.168.0.106:37017,192.168.0.106:37018,192.168.0.106:37019/admin?replicaSet=mongoReplSet"
 MongodbDatabase = "demo"
 
 [Modules.SM_LiveModule]
@@ -30,6 +30,7 @@ HlsAddr         = ":7002"
 RtmpNoAuth      = true
 CacheAddr       = "cache:6379"
 CacheDB         = 2
+CachePassword   = "li13451234"
 FLVArchive      = true
 FLVDir          = "tmp"
 ReadTimeout     = 10
