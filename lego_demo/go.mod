@@ -11,3 +11,5 @@ require (
 	go.mongodb.org/mongo-driver v1.5.2
 	google.golang.org/protobuf v1.26.0
 )
+
+replace github.com/liwei1dao/lego => E:\go\src\lego
