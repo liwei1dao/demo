@@ -8,9 +8,10 @@ import (
 
 type Option func(*Options)
 type Options struct {
-	MongodbUrl      string
-	MongodbDatabase string
-	TimeOut         time.Duration
+	MongodbUrl       string
+	MongodbDatabase  string
+	InitArticleIdNum int
+	TimeOut          time.Duration
 }
 
 func SetTMongodbUrl(v string) Option {
@@ -24,6 +25,11 @@ func SetTMongodbDatabase(v string) Option {
 		o.MongodbDatabase = v
 	}
 }
+func InitArticleIdNum(v int) Option {
+	return func(o *Options) {
+		o.InitArticleIdNum = v
+	}
+}
 
 func SetTimeOut(v time.Duration) Option {
 	return func(o *Options) {
@@ -33,7 +39,8 @@ func SetTimeOut(v time.Duration) Option {
 
 func newOptions(config map[string]interface{}, opts ...Option) Options {
 	options := Options{
-		TimeOut: time.Second * 3,
+		TimeOut:          time.Second * 3,
+		InitArticleIdNum: 100000,
 	}
 	if config != nil {
 		mapstructure.Decode(config, &options)
@@ -46,7 +53,8 @@ func newOptions(config map[string]interface{}, opts ...Option) Options {
 
 func newOptionsByOption(opts ...Option) Options {
 	options := Options{
-		TimeOut: time.Second * 3,
+		TimeOut:          time.Second * 3,
+		InitArticleIdNum: 100000,
 	}
 	for _, o := range opts {
 		o(&options)

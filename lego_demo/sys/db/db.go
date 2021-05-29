@@ -35,11 +35,7 @@ func (this DB) checkDbInit() (err error) {
 	count, err := this.mgo.CountDocuments(Sql_ArticleIdDataIdTable, bson.M{})
 	if err != nil || count == 0 {
 		//批量插入数据
-		leng := 1000000
-		cIds := make([]interface{}, leng)
-		for i, _ := range cIds {
-			cIds[i] = 1000000 + i
-		}
+		leng := this.options.InitArticleIdNum
 		data := make([]interface{}, leng)
 		r := rand.New(rand.NewSource(time.Now().Unix()))
 		n := 0
