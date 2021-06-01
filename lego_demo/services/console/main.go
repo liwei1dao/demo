@@ -24,7 +24,6 @@ func main() {
 	lego.Run(s, //运行模块
 		console.NewModule(),
 	)
-
 }
 
 func NewService(ops ...cluster.Option) core.IService {
