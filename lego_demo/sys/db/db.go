@@ -19,7 +19,7 @@ func newSys(options Options) (sys *DB, err error) {
 		mgo.SetMongodbDatabase(options.MongodbDatabase),
 		mgo.SetTimeOut(options.TimeOut),
 	); err == nil {
-		// err = sys.checkDbInit()
+		err = sys.checkDbInit()
 	}
 	return
 }
